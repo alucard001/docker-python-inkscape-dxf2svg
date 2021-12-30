@@ -1,11 +1,11 @@
 from flask import Flask
 from flask import request
-from werkzeug.utils import environ_property, secure_filename
+# from werkzeug.utils import environ_property, secure_filename
 
 import boto3
-from botocore.config import Config
+# from botocore.config import Config
 
-import os
+# import os
 import uuid
 import subprocess
 
@@ -77,9 +77,6 @@ def dxf2svg():
         # run command to convert dxf to svg: Linux only
         #   ./inkscape/usr/bin/python ./inkscape/usr/share/inkscape/extensions/dxf_input.py truelove5.dxf --output=dev_truelove5.svg --scalemethod=auto
 
-        # str_command = f"/usr/bin/sh /root/squashfs-root/usr/bin/python /root/squashfs-root/usr/share/inkscape/extensions/dxf_input.py /root/{dxf_local_filename} --output=/root/{svg_local_filename} --scalemethod=auto"
-        # app.logger.info("Command: " + str_command)
-
         command = [
             "/usr/bin/sh",
             "/root/squashfs-root/usr/bin/python",
@@ -96,7 +93,6 @@ def dxf2svg():
         # Put output svg file to S3
         client.upload_file(svg_local_filename, s3_bucket, s3_svg_path)
 
-        # https://flask.palletsprojects.com/en/2.0.x/quickstart/#apis-with-json
         result = True
         message = "Success"
 
@@ -104,6 +100,7 @@ def dxf2svg():
         result = False
         message = e.args[0]
 
+    # https://flask.palletsprojects.com/en/2.0.x/quickstart/#apis-with-json
     return {
         "success": result,
         "message": message
